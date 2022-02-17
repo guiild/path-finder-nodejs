@@ -1,0 +1,14 @@
+{
+  "name": "path_finder",
+  "version": "1.0.0",
+  "description": "take home test path finder",
+  "main": "pathFinder.js",
+  "author": "contact@guiild.fr",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}
