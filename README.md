@@ -42,7 +42,7 @@ Extend your solution to a NxN board
 Fork the project on Github and submit a merge request when you are ready.
 
 ## Test
-Unit test can be found in *bowling.test.js*. If you think some are missing, you can add yours.
+Unit test can be found in *pathFinder.test.js*. If you think some are missing, you can add yours.
 
 You can use docker to run your test in a controled environment
 
