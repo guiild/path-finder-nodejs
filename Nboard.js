@@ -1,4 +1,8 @@
 class PathFinder {
+    /*Declaration du plateau de jeu
+    */
+   N = 8;
+
     /*  Declaration des valeurs en fonction des déplacement possibles
         up-up-right = -15 (position - (2*8) +1)
         up-up-left = -17 (position - (2*8) -1)
@@ -9,7 +13,7 @@ class PathFinder {
         left-left-down = 6 ((position -2) + (1*8))
         left-left-up = -10 ((position -2 ) - (1*8))
     */
-    MOVES = [-15, -17, 17, 15, -6, 10, +6, -10];
+    MOVES = [((-2*this.N)+1), ((-2*this.N)-1),((2*this.N) +1),((2*this.N) -1), (2 -(1*this.N)), (2+(1*this.N)), (-2 + (1*this.N)), (-2 - (1*this.N))]
 
     /* On ajoute la position aux valeurs possible pour avoir la nouvelle position après le déplacement
         @function
@@ -33,8 +37,8 @@ class PathFinder {
     sortOutOfBounds(resultMove) {
         let resultMinusOutOfBounds = [];
         resultMove.map((newPos => {
-            if (newPos > (8*8)) return
-            if (newPos < (8/8)) return
+            if (newPos > (this.N*this.N)) return
+            if (newPos < (this.N/this.N)) return
             resultMinusOutOfBounds.push(newPos)
         }))
         return resultMinusOutOfBounds
@@ -46,33 +50,39 @@ class PathFinder {
                 2) resultMinusOfBounds = les positions possibles qui ne se trouvent pas en dehors du plateau de jeu
         OUTPUT: le résultat des valeurs possibles contenus dans resultMinusOfBounds mois les valeurs hors de portée des mouvements  
     */
-
     sortByCol(pos, resultMinusOutOfBounds) {
         // Calcul de la colonne en fonction de la position 
-        let colPos = pos % 8;
+        let colPos = pos % this.N;
+        // console.log({ colPos });
         switch (true) {
-            case (colPos === (8 / 8)):
+            case (colPos === (this.N / this.N)):
                 return resultMinusOutOfBounds.filter((newPos => {
-                    return newPos % 8 === ((colPos + 1) % 8) || newPos % 8 === ((colPos + 2) % 8) // Left impossible, +2 right MAX
+                    return newPos % this.N === ((colPos + 1) % this.N) || newPos % this.N === ((colPos + 2) % this.N) // Left impossible, +2 right MAX
                 }));
-            case ((colPos) === (8 / 8) + 1):
+                break;
+            case ((colPos) === (this.N / this.N) + 1):
                 return resultMinusOutOfBounds.filter((newPos => {
-                    return newPos % 8 === ((colPos - 1) % 8) || newPos % 8 === ((colPos + 1) % 8) || newPos % 8 === ((colPos + 2) % 8) // -1 Left Max, +2 Right Max
+                    return newPos % this.N === ((colPos - 1) % this.N) || newPos % this.N === ((colPos + 1) % this.N) || newPos % this.N === ((colPos + 2) % this.N) // -1 Left Max, +2 Right Max
                 }));
-            case ((colPos) === (8 - 1)):
+                break;
+            case ((colPos) === (this.N - 1)):
                 return resultMinusOutOfBounds.filter((newPos => {
-                    return newPos % 8 === ((colPos - 2) % 8) || newPos % 8 === ((colPos - 1) % 8) || newPos % 8 === ((colPos + 1) % 8) // -2 Left max, +1 Right Max
+                    return newPos % this.N === ((colPos - 2) % this.N) || newPos % this.N === ((colPos - 1) % this.N) || newPos % this.N === ((colPos + 1) % this.N) // -2 Left max, +1 Right Max
                 }));
+                break;
             case ((colPos) === 0):
                 return resultMinusOutOfBounds.filter((newPos => {
-                    return newPos % 8 === ((colPos + 8 - 2) % 8) || newPos % 8 === ((colPos + 8 - 1) % 8) // Right impossible , -2 Left Max
+                    return newPos % this.N === ((colPos + this.N - 2) % this.N) || newPos % this.N === ((colPos + this.N - 1) % this.N) // Right impossible , -2 Left Max
                 }));
+                break;
             default:
                 return resultMinusOutOfBounds.filter((newPos => {
-                    return newPos % 8 === ((colPos - 2) % 8) || newPos % 8 === ((colPos - 1) % 8) || newPos % 8 === ((colPos + 1) % 8) || newPos % ((colPos + 2) % 8) === 5 // -2 Left Max, +2 Right Max
+                    return newPos % this.N === ((colPos - 2) % this.N) || newPos % this.N === ((colPos - 1) % this.N) || newPos % this.N === ((colPos + 1) % this.N) || newPos % ((colPos + 2) % 8) === 5 // -2 Left Max, +2 Right Max
                 }));
+                break;
         };
     };
+
     /*Fonction qui prend le tableau des pos precedentes, applique les déplacements depuis chaque pos et filtre les résultats 
         @Function
         INPUT: prevPos = number ou array des positions precedentes depuis lesquelles on a pu se déplacer 
@@ -80,11 +90,16 @@ class PathFinder {
     */
     applyFilterPosByPos(prevPos) {
         let result = []
+        // console.log({ prevPos });
         if (typeof prevPos !== "number") {
             prevPos.forEach((pos => {
+                // console.log(pos);
                 let newPos = (this.moveInAnydirection(pos, this.MOVES))
+                // console.log({newPos});
                 let newPosSortByOut = this.sortOutOfBounds(newPos)
+                // console.log({pos,newPosSortByOut});
                 let newPosSortByCol = this.sortByCol(pos, newPosSortByOut)
+                // console.log({newPosSortByCol});
                 result.push(newPosSortByCol)
             }))
         } else {
@@ -100,7 +115,6 @@ class PathFinder {
         @Function
         INPUT: arr = array contenant les array filtrés
         OUTPUT: arrWithoutDouble = un array dans lequel les doublons de positions possibles ont été supprimés
-    
     */
     flatAndDeleteDoubleValue(arr) {
         let flatArr = arr.flat(arr.length)
@@ -129,6 +143,7 @@ class PathFinder {
             return this.game(resultMove, target, compteur, INITPOS)
         }
     };
+
     /* function qui donne le resultat 
         @Function
         INPUT:  1) pos = position actuelle
@@ -140,10 +155,10 @@ class PathFinder {
         let compteur = 1;
         return this.game(position, target, compteur, INITPOS)
     }
-}
+};
 
 let myPathFinder = new PathFinder();
-console.log(myPathFinder.getMinimumMoves(1, 64));
+console.log(myPathFinder.getMinimumMoves(8, 57));
 
 
 module.exports = PathFinder;

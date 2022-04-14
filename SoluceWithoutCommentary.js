@@ -1,22 +1,5 @@
 class PathFinder {
-    /*  Declaration des valeurs en fonction des déplacement possibles
-        up-up-right = -15 (position - (2*8) +1)
-        up-up-left = -17 (position - (2*8) -1)
-        down-down-right = 17 (position + (2*8) +1)
-        down-down-left = 15 (position + (2*8) -1)
-        right-right-up = -6 ((position +2) - (1*8) )
-        right-right-down = 10 ((position+2) +(1*8))
-        left-left-down = 6 ((position -2) + (1*8))
-        left-left-up = -10 ((position -2 ) - (1*8))
-    */
     MOVES = [-15, -17, 17, 15, -6, 10, +6, -10];
-
-    /* On ajoute la position aux valeurs possible pour avoir la nouvelle position après le déplacement
-        @function
-        INPUT : 1) pos = la position depuis laquelle on va se déplacer
-                2) MOVES = valeurs possible
-        OUTPUT : resultMove = la nouvelle position en fonction du déplacement effectué
-    */
     moveInAnydirection(pos, MOVES) {
         let resultMove = [];
         MOVES.forEach(num => {
@@ -24,12 +7,6 @@ class PathFinder {
         })
         return resultMove
     };
-
-    /* Filtre en fonction des nouvelles positions , qui permet de retirer les positions hors plateau de jeu
-        @Function
-        INPUT : resultMove = la nouvelle position après avoir éfféctué un déplacement
-        OUTPUT: resultMinusOutOfBounds = les positions possible qui ne se trouvent pas en dehors du plateau de jeu
-    */
     sortOutOfBounds(resultMove) {
         let resultMinusOutOfBounds = [];
         resultMove.map((newPos => {
@@ -39,16 +16,7 @@ class PathFinder {
         }))
         return resultMinusOutOfBounds
     };
-
-    /* Filtre en fonction de la col de depart et des cols de la new pos, qui permet de retirer les positions hors de portée des mouvements associés
-        @Function
-        INPUT:  1) pos = la position depuis laquelle on va se déplacer
-                2) resultMinusOfBounds = les positions possibles qui ne se trouvent pas en dehors du plateau de jeu
-        OUTPUT: le résultat des valeurs possibles contenus dans resultMinusOfBounds mois les valeurs hors de portée des mouvements  
-    */
-
     sortByCol(pos, resultMinusOutOfBounds) {
-        // Calcul de la colonne en fonction de la position 
         let colPos = pos % 8;
         switch (true) {
             case (colPos === (8 / 8)):
@@ -73,11 +41,6 @@ class PathFinder {
                 }));
         };
     };
-    /*Fonction qui prend le tableau des pos precedentes, applique les déplacements depuis chaque pos et filtre les résultats 
-        @Function
-        INPUT: prevPos = number ou array des positions precedentes depuis lesquelles on a pu se déplacer 
-        OUTPUT: result = array contenant un array filtré par position
-    */
     applyFilterPosByPos(prevPos) {
         let result = []
         if (typeof prevPos !== "number") {
@@ -95,27 +58,11 @@ class PathFinder {
         }
         return result
     };
-
-    /* function qui applatit les tableaux et supprime les doublons
-        @Function
-        INPUT: arr = array contenant les array filtrés
-        OUTPUT: arrWithoutDouble = un array dans lequel les doublons de positions possibles ont été supprimés
-    
-    */
     flatAndDeleteDoubleValue(arr) {
         let flatArr = arr.flat(arr.length)
         let arrWithoutDouble = [...new Set(flatArr)]
         return arrWithoutDouble
     };
-
-    /*  Function recursive qui simule les tours de jeu et incrémente un compteur a chaque tour jusqu'a arriver sur la cible finale
-    @Function
-    INPUT:  1) position = number ou array , position depuis laquelle faire les mouvements
-            2) target = cible finale
-            3) compteur = compteur permettant de connaitre le nombre de coups necessaire
-            4) INITPOS = position initiale servant a logger la phrase de FIN
-    OUTPUT: compteur = le nombre de coups qu'il a fallu pour atteindre la cible depuis notre position
-    */
     game(position, target, compteur, INITPOS) {
         if (position == target) return 0;
         let filterMove = this.applyFilterPosByPos(position)
@@ -129,21 +76,13 @@ class PathFinder {
             return this.game(resultMove, target, compteur, INITPOS)
         }
     };
-    /* function qui donne le resultat 
-        @Function
-        INPUT:  1) pos = position actuelle
-                2) target = position sur laquelle on doit se retrouver
-        OUTPUT: un nombre indiquant le nombre de coups possible pour arriver a la position target
-    */
     getMinimumMoves = (position, target) => {
         const INITPOS = position
         let compteur = 1;
         return this.game(position, target, compteur, INITPOS)
     }
 }
-
 let myPathFinder = new PathFinder();
 console.log(myPathFinder.getMinimumMoves(1, 64));
-
 
 module.exports = PathFinder;
