@@ -1,14 +1,16 @@
-const { difference, isEmpty, min } = require("lodash");
-const Dijkstra = require("./dijkstra");
+class Board {
+  boardSize;
 
-const BOARD_SIZE = 8;
-class PathFinder {
+  constructor(boardSize = 8) {
+    this.boardSize = boardSize;
+  }
+
   left = (position) => {
     if (position === -1) {
       return -1;
     }
 
-    if (position % BOARD_SIZE === 1) {
+    if (position % this.boardSize === 1) {
       return -1;
     }
 
@@ -19,7 +21,7 @@ class PathFinder {
     if (position === -1) {
       return -1;
     }
-    if (position % BOARD_SIZE === 0) {
+    if (position % this.boardSize === 0) {
       return -1;
     }
 
@@ -30,22 +32,22 @@ class PathFinder {
     if (position === -1) {
       return -1;
     }
-    if (position / BOARD_SIZE <= 1) {
+    if (position / this.boardSize <= 1) {
       return -1;
     }
 
-    return position - BOARD_SIZE;
+    return position - this.boardSize;
   };
 
   down = (position) => {
     if (position === -1) {
       return -1;
     }
-    if (position / BOARD_SIZE > BOARD_SIZE - 1) {
+    if (position / this.boardSize > this.boardSize - 1) {
       return -1;
     }
 
-    return position + BOARD_SIZE;
+    return position + this.boardSize;
   };
 
   getLegalMoves = (position) => {
@@ -60,13 +62,6 @@ class PathFinder {
       this.left(this.left(this.up(position))),
     ].filter((move) => move !== -1);
   };
-
-  getMinimumMoves = (position, target) => {
-    const dijkstra = new Dijkstra(position, BOARD_SIZE);
-    dijkstra.start();
-
-    return dijkstra.distances[target - 1];
-  };
 }
 
-module.exports = PathFinder;
+module.exports = Board;
