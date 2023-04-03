@@ -1,7 +1,10 @@
+var assert = require('assert');
+
 class PathFinder {
 
-    constructor(actual, target) {
-        this.edge = 8;
+    constructor(actual, target, edge = 8) {
+	assert(edge >= 5, 'Minimum edge size is 5');
+        this.edge = edge;
         this.from = new Position(this.edge, actual)
         this.to = new Position(this.edge, target)
     }
@@ -52,6 +55,7 @@ class PathFinder {
 class Position {
 
     constructor(edge, index) {
+        assert(0 < index <= edge*edge)
         this.edge = edge;
 	this.index = index;
     }

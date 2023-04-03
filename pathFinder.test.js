@@ -26,6 +26,11 @@ test('From 50 to 51', () => {
 });
 
 test('Knight in a corner', () => {
-    const finder = new PathFinder(1, 10)
+    const finder = new PathFinder(1, 10);
     expect(finder.getMinimumMoves()).toBe(4);
+});
+
+test('Min edge size', () => {
+    const finder = new PathFinder(13, 6, edge=5);
+    expect(finder.getMinimumMoves()).toBe(1);
 });
