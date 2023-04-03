@@ -7,20 +7,28 @@ class PathFinder {
     }
 
     getMinimumMoves = () => {
-        if (this.is_diagonal_2) {
+        if (this.is_diagonal_special_case) {
             return 4;
-	} else if (this.is_near) {
+	} else if (this.is_near_special_case) {
             return 3;
-	}
+	} else if (this.is_corner_special_case) {
+            return 4;
+        }
         return this.mp + ((this.mp + this.dx + this.dy) % 2)
     }
 
-    get is_diagonal_2() {
+    get is_diagonal_special_case() {
         return (this.dx == 2) && (this.dy == 2)
     }
 
-    get is_near() {
+    get is_near_special_case() {
         return (this.dx + this.dy) == 1
+    }
+
+    get is_corner_special_case() {
+        return this.from.is_in_corner
+	    && this.dx == 1
+	    && this.dy == 1
     }
 
     get mp() {
@@ -54,6 +62,11 @@ class Position {
 
     get y() {
         return Math.floor((this.index - 1) / this.edge)
+    }
+
+    get is_in_corner() {
+        let corners = [1, this.edge, (this.edge * this.edge - this.edge + 1), (this.edge * this.edge)]
+        return this.index in corners
     }
 }
 

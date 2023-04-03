@@ -24,3 +24,8 @@ test('From 50 to 51', () => {
     const finder = new PathFinder(50, 51);
     expect(finder.getMinimumMoves()).toBe(3);
 });
+
+test('Knight in a corner', () => {
+    const finder = new PathFinder(1, 10)
+    expect(finder.getMinimumMoves()).toBe(4);
+});
