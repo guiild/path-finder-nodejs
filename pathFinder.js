@@ -1,12 +1,11 @@
 var assert = require('assert');
 
 class PathFinder {
-
     constructor(actual, target, edge = 8) {
 	assert(edge >= 5, 'Minimum edge size is 5');
-        this.from = new Position(edge, actual)
-        this.to = new Position(edge, target)
-        this.map = new Map(this.from, this.to)
+        this.from = new Position(edge, actual);
+        this.to = new Position(edge, target);
+        this.map = new Map(this.from, this.to);
     }
 
     getMinimumMoves = () => {
@@ -17,26 +16,25 @@ class PathFinder {
 	} else if (this.is_corner_special_case) {
             return 4;
         }
-        return this.map.mp + ((this.map.mp + this.map.dx + this.map.dy) % 2)
+        return this.map.mp + ((this.map.mp + this.map.dx + this.map.dy) % 2);
     }
 
     get is_diagonal_special_case() {
-        return (this.map.dx == 2) && (this.map.dy == 2)
+        return (this.map.dx == 2) && (this.map.dy == 2);
     }
 
     get is_near_special_case() {
-        return (this.map.dx + this.map.dy) == 1
+        return (this.map.dx + this.map.dy) == 1;
     }
 
     get is_corner_special_case() {
         return this.from.is_in_corner
 	    && this.map.dx == 1
-	    && this.map.dy == 1
+	    && this.map.dy == 1;
     }
 }
 
 class Map {
-
     constructor(from, to) {
         this.from = from;
         this.to = to;
@@ -60,24 +58,23 @@ class Map {
 }
 
 class Position {
-
     constructor(edge, index) {
-        assert(0 < index <= edge*edge)
+        assert(0 < index <= edge*edge, 'Index out of bounds');
         this.edge = edge;
 	this.index = index;
     }
 
     get x() {
-        return (this.index - 1) % this.edge
+        return (this.index - 1) % this.edge;
     }
 
     get y() {
-        return Math.floor((this.index - 1) / this.edge)
+        return Math.floor((this.index - 1) / this.edge);
     }
 
     get is_in_corner() {
-        let corners = [1, this.edge, (this.edge * this.edge - this.edge + 1), (this.edge * this.edge)]
-        return this.index in corners
+        let corners = [1, this.edge, (this.edge * this.edge - this.edge + 1), (this.edge * this.edge)];
+        return this.index in corners;
     }
 }
 
