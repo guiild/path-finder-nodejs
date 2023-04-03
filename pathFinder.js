@@ -1,9 +1,9 @@
 class PathFinder {
 
-    constructor(position, target) {
-        this.position = position;
-        this.target = target;
+    constructor(actual, target) {
         this.edge = 8;
+        this.from = new Position(this.edge, actual)
+        this.to = new Position(this.edge, target)
     }
 
     getMinimumMoves = () => {
@@ -32,13 +32,29 @@ class PathFinder {
     }
 
     get dx() {
-        return Math.abs(((this.position-1) % this.edge) - ((this.target-1) % this.edge));
+        return Math.abs(this.from.x - this.to.x);
     }
 
     get dy() {
-        return Math.abs(Math.floor((this.position-1) / this.edge) - Math.floor((this.target-1) / this.edge));
+        return Math.abs(this.from.y - this.to.y);
     }
 
+}
+
+class Position {
+
+    constructor(edge, index) {
+        this.edge = edge;
+	this.index = index;
+    }
+
+    get x() {
+        return (this.index - 1) % this.edge
+    }
+
+    get y() {
+        return Math.floor((this.index - 1) / this.edge)
+    }
 }
 
 module.exports = PathFinder;
