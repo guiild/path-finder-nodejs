@@ -1,7 +1,14 @@
 class PathFinder {
-    getMinimumMoves = (position, target) => {
+
+    constructor(position, target) {
+        this.position = position;
+        this.target = target;
+    }
+
+    getMinimumMoves = () => {
         return 0
     }
+
 }
 
 module.exports = PathFinder;
