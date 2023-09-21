@@ -68,20 +68,6 @@ class PathFinder {
             return 4;
         }
 
-        // const absDiff = Math.abs(pos - tar)
-        // if ([n+2, n-2, 2*n-1, 2*n+1].find(v => absDiff === v)) {
-        //     return 1;
-        // }
-        // if ([2, 2*n, n+1, n-1].find(v => absDiff === v)) {
-        //     return 2;
-        // }
-        // if ([1, n].find(v => absDiff === v)) {
-        //     return 3;
-        // }
-        // if ([2*n+2, 2*n-2].find(v => absDiff === v)) {
-        //     return 4;
-        // }
-
         const nextPos = pos + this._getNextPosition(
             absRowDiff,
             { row: rowDiff, col: colDiff },
