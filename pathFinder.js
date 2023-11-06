@@ -5,12 +5,17 @@ class PathFinder {
     let positions_at_current_move = new Set([position]);
     let move_count = 0;
 
+    const already_seen_positions = new Set([position]);
+
     while (!positions_at_current_move.has(target)) {
       const positions_at_next_move = new Set();
 
       positions_at_current_move.forEach((current_position) => {
         this.getNextPositions(current_position).forEach((next_position) => {
-          positions_at_next_move.add(next_position);
+          if (!already_seen_positions.has(next_position)) {
+            positions_at_next_move.add(next_position);
+            already_seen_positions.add(next_position);
+          }
         });
       });
 
