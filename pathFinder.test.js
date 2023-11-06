@@ -1,5 +1,11 @@
 const PathFinder = require('./pathFinder');
 
+test('Get next positions from 1', () => {
+    const finder = new PathFinder();
+    expect(finder.getNextPositions(1)).toStrictEqual([11, 18]);
+});
+
+
 test('From 1 to 1', () => {
     const finder = new PathFinder();
     expect(finder.getMinimumMoves(1, 1)).toBe(0);
