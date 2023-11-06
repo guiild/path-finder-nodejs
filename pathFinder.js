@@ -1,5 +1,7 @@
 class PathFinder {
-  board_size = 8;
+  constructor(board_size = 8) {
+    this.board_size = board_size;
+  }
 
   getMinimumMoves = (position, target) => {
     let positions_at_current_move = new Set([position]);
