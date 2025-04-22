@@ -1,8 +1,15 @@
+// https://github.com/guiild/path-finder-nodejs
+
 const PathFinder = require('./pathFinder');
 
 test('From 1 to 1', () => {
     const finder = new PathFinder();
     expect(finder.getMinimumMoves(1, 1)).toBe(0);
+});
+
+test('From 1 to 11', () => {
+    const finder = new PathFinder();
+    expect(finder.getMinimumMoves(1, 11)).toBe(1);
 });
 
 test('From 19 to 53', () => {
